@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New Country</title>
+    {% include 'essential.html' %}
+    <link rel="stylesheet" href={% static "css/user_profile/styles.css" %}>
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <div class="row" style="margin-top: 2em; margin-bottom: 2em;">
+    <div class="large-6 columns small-centered">
+    <div class="row">
+        <form action="/country/process-add/" method="get">
+            <label for="">Country Name: {{ name }}
+                <input id="name" type="text" name="name" placeholder="Country">
+            </label>
+            <label for="">Description
+                <textarea name="description" id="description" type="text" rows="4">{{ description }}</textarea>
+            </label>
+            <div class="footer text-centered">
+                <input class="button" type="submit" value="Save Change">
+            </div>
+        </form>
+    </div>
+    </div>
+    </div>
+    {% include 'footerbar.html' %}
+</body>
+</html>

@@ -1,0 +1,169 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ name }}</title>
+    {% include 'essential.html' %}
+    {% include 'jquery-essential.html' %}
+    <link rel="stylesheet" href={% static "css/firstpage/styles.css" %}>
+    <link rel="stylesheet" href={% static "css/progress_bar/styles.css"%}>
+</head>
+<style>
+    td {
+        text-align: left;
+        background-color: white;
+        table-layout: auto;
+    }
+    th {
+        background-color: #6B7A8F;
+        color: white
+    }
+</style>
+<body>
+    {% include 'navbar.html' %}
+
+    <input type="hidden" name="booking_id" id="booking_id" value="{{ booking_id }}">
+
+    <section>
+        <div class="large-6 columns small-centered">
+            <div class="progress">
+                <div class="circle active">
+                    <span class="label">1</span>
+                    <span class="title">Detail</span>
+                </div>
+                <span class="bar"></span>
+                <div class="circle">
+                    <span class="label">2</span>
+                    <span class="title">Infomation</span>
+                </div>
+                <span class="bar"></span>
+                <div class="circle">
+                    <span class="label">3</span>
+                    <span class="title">Checking</span>
+                </div>
+                <span class="bar"></span>
+                <div class="circle">
+                    <span class="label">4</span>
+                    <span class="title">Payment</span>
+                </div>
+                <span class="bar"></span>
+                <div class="circle">
+                    <span class="label">5</span>
+                    <span class="title">Finish</span>
+                </div>
+            </div>
+            <br><br>
+        </div>
+    </section>
+    <section>
+        <br>
+        <div class="large-7 columns small-centered">
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="3">Package Tour</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td width="10%"></td>
+                        <td>Name of Package Tour:</td>
+                        <td width="50%">{{ name }}</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Company:</td>
+                        <td>{{ company_name }}</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Depart date:</td>
+                        <td>{{ start_date }}</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Return date:</td>
+                        <td>{{ end_date }}</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Travel by:</td>
+                        <td>{{ travel_by }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <br><br>
+    </section>
+
+    <div class="large-7 columns small-centered">
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="3">Traveller Detail </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td width="10%"></td>
+                    <td>Seat Available:</td>
+                    <td width="50%">{{ remaining_people }}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>Adult:</td>
+                    <td><select name="adult" id="adult"style="height:35px; width:80px">
+                    </select></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>Children:</td>
+                    <td><select name="children" id="children"style="height:35px; width:80px">
+                </tr>
+                <tr>
+                    <td></td><td></td>
+                    <td style="color:red;"><font size="2">*Passenger age less than 12 years old is children</font></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>        
+    <br><br>
+
+    <div class="row">
+        <div class="large-7 columns small-centered">
+            <div class="large-4 columns"></div>
+            <div class="large-4 columns">
+                <input class="expanded button" type="submit" value="Next" onclick="handle_click()">
+            </div>
+        </div>
+    </div>
+
+    {% include 'footerbar.html' %}   
+
+    <script>
+        function handle_click() {
+            var a = parseInt(document.getElementById("adult").value);
+            var b = parseInt(document.getElementById("children").value);
+            var c = parseInt({{remaining_people}});
+            if(a+b > c ){
+                alert("Over Seat Available");
+            }
+            else{
+                var url = "/booking/process-index?booking_id={{booking_id}}&adult=".concat(a);
+                var url2 = "&children=".concat(b);
+                window.location.href = url.concat(url2);
+            }
+        }
+
+        var AdultSelect = "";
+        var ChildrenSelect = "<option value='0'> - </option>";
+        for(var i = 1; i <= {{ remaining_people }}; i++) {
+            AdultSelect += "<option value='" + i + "'>" + i + "</option>";
+            ChildrenSelect += "<option value='" + i + "'>" + i + "</option>";
+        }
+        $( 'select[name="adult"]' ).append( AdultSelect );
+        $( 'select[name="children"]' ).append( ChildrenSelect );
+    </script>
+</body>
+</html>

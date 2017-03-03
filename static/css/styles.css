@@ -1,0 +1,42 @@
+@charset "UTF-8";
+.row:before, .row:after {
+    content: ' ';
+    display: table;
+    -ms-flex-preferred-size: 0;
+    flex-basis: 0;
+    -ms-flex-order: 1;
+    order: 1
+}
+.text-centered {
+    text-align: center;
+}
+body {
+    background-color: #f2f2f2;
+}
+
+nav a, nav a:hover, footer a, footer a:hover {
+    color: white;
+}
+
+.nav a, .nav a:visited {
+    text-decoration: none;
+    color: black;
+}
+.nav a:hover, .nav a:active {
+    text-decoration: underline;
+    color: black;
+}
+
+.nav-on-background a:hover, .nav-on-background a:active {
+    text-decoration: underline;
+    color: white;
+}
+
+.nav-on-background a, .nav-on-background a:visited {
+    text-decoration: none;
+    color: white;
+}
+
+footer .footer .row .columns .row a:hover {
+    text-decoration: underline;
+}

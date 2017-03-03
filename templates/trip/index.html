@@ -1,0 +1,130 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ this_trip.name }}</title>
+    {% include 'essential.html' %}
+    {% include 'jquery-essential.html' %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/motion-ui/1.2.2/motion-ui.min.css">
+    <link rel="stylesheet" href={% static "css/styles.css" %}>
+    <link rel="stylesheet" href={% static "css/firstpage/styles.css" %}>
+</head>
+<style>
+    td {
+        text-align: center;
+        background-color: white;
+        table-layout: auto;
+        border: 1px solid black;
+    }
+    th {
+        background-color: #6B7A8F;
+        color: white;
+        border: 1px solid black;
+    }
+    .tabs a, .tabs a:hover {
+        color: #fff;
+    }
+    .tabs .tabs-title.is-active a {
+        background-color: orange;
+    }
+    .tabs .tabs-title a {
+        background-color: #6B7A8F;
+    }
+</style>
+<body>
+    {% include 'navbar.html' %}
+    <div class="row">
+        <div class="large-10 columns small-centered">
+            <section>
+                <div class="row" style="padding:30px">
+                    <h2> {{ this_trip.name }} </h2>
+                    <p>by <a href="/company/?company_id={{ this_trip.company.id }}">{{ this_trip.company.name }}</a></p>
+                </div>
+                <div class="row">
+                    <div class="large-4 columns">
+                        <div class="row">
+                            <img src="/trip/picture/?trip_id={{ this_trip.id }}" />
+                        </div>
+                    </div>
+                    <div class="large-8 columns" style="padding:10px">
+                        <h4>Highlight:</h4>
+                        <div class="row"> 
+                            <div class="large-13 columns">
+                                <p>{{ this_trip.highlight }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            {% if access_edit %}
+            <div class="row">
+            {% include 'upload-image-template.html' with form_action="/trip/handle-change-picture/" type="trip_id" type_id=this_trip.id %}
+            </div>
+            {% endif %}
+            <div class="row"style="padding:30px">
+                <div class="column">
+                    <h4 style="text-align:left">Booking Info <a class="button" href="process-booking/?trip_id={{ this_trip.id }}">Book Now</a></h4>
+                    <table align="center">
+                        <tr>
+                            <th>Seat Available</th>
+                            <th>Seat Maximun</th>
+                            <th>Date</th>
+                            <th>Travel by</th>
+                            <th>Price</th>
+                        </tr>
+                        <tr>
+                            <td>{{ this_trip.remaining_people }}</td>
+                            <td>{{ this_trip.max_people }}
+                            <td>{{ this_trip.start_date }} - {{ this_trip.end_date }}</td>
+                            <td>{{ this_trip.travel_by }}</td>
+                            <td>{{ this_trip.price }} THB</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <h4>Where you can go</h4>
+            <div class="row large-up-3">
+                {% for p in place_list %}
+                {% include 'thumbnail-template.html' with link_to="/place/?place_id=" object=p link_img="/place/picture/?place_id=" %}
+                {% endfor %}
+            </div>
+            <a href="show-place/?trip_id={{ this_trip.id }}" style="color:black"><p style="text-align: right;">Show more</p></a>
+            <div class="row" style="padding:30px">
+                <div class="column">
+                    <h4 style="text-align:left">More Details</h4>
+                    <ul class="tabs" data-tabs id="example-tabs" style="background-color:#6B7A8F">
+                        <li class="tabs-title is-active"><a href="#details" aria-selected="true"><font size="3">Details</font></a></li>
+                        <li class="tabs-title"><a href="#conditions"><font size="3">Conditions</font></a></li>
+                    </ul>
+                    <div class="tabs-content" data-tabs-content="example-tabs">
+                        <div class="tabs-panel is-active" id="details">
+                            <p>{{ this_trip.description }}</p>
+                        </div>
+                        <div class="tabs-panel" id="conditions">
+                            <p>{{ this_trip.conditions }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        {% if access_edit %}
+        <div class="large-4 columns">
+            <a class="expanded button" href="/trip/edit?trip_id={{ this_trip.id }}">Edit Trip</a>
+        </div>
+        <div class="large-4 columns">
+            <a class="expanded button" href="/trip/delete?trip_id={{ this_trip.id }}">Delete Trip</a>
+        </div>
+        {% endif %}
+    </div>
+
+
+    {% include 'footerbar.html' %} 
+
+    <script>
+        $(document).foundation();
+    </script>
+</body>
+</html>

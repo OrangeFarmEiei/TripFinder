@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ name }}</title>
+    {% include 'essential.html' %}
+    {% include 'jquery-essential.html' %}
+    <link rel="stylesheet" href={% static "css/firstpage/styles.css" %}>
+    <link rel="stylesheet" href={% static "css/progress_bar/styles.css"%}>
+</head>
+<style>
+    td {
+        text-align: left;
+        background-color: white;
+        table-layout: auto;
+    }
+    th {
+        background-color: #6B7A8F;
+        color: white
+    }
+</style>
+<body>
+    {% include 'navbar.html' %}
+    <input type='hidden' id='booking_id' name='booking_id' value="{{ booking_id }}">
+    <section>
+        <div class="large-6 columns small-centered">
+            <div class="progress">
+                <div class="circle done">
+                    <span class="label">&#10003</span>
+                    <span class="title">Detail</span>
+                </div>
+                <span class="bar done"></span>
+                <div class="circle done">
+                    <span class="label">&#10003</span>
+                    <span class="title">Infomation</span>
+                </div>
+                <span class="bar done"></span>
+                <div class="circle done">
+                    <span class="label">&#10003</span>
+                    <span class="title">Checking</span>
+                </div>
+                <span class="bar done"></span>
+                <div class="circle done">
+                    <span class="label">&#10003</span>
+                    <span class="title">Payment</span>
+                </div>
+                <span class="bar active"></span>
+                <div class="circle active">
+                    <span class="label">4</span>
+                    <span class="title">Finish</span>
+                </div>
+            </div>
+            <br><br>
+        </div>
+    </section>
+
+    <section>
+        <input type='hidden' id='booking_id' name='booking_id' value="{{ booking_id }}">
+
+        <br>
+       
+
+        <div class="large-7 columns small-centered">
+        <table>
+            <h4 style="text-align: center;">Thank You!</h4>
+            <h5 style="text-align: center;">We will confirm your payment within 24-48 hours(exclude weekends or holidays)</h5>
+        </table>
+        </div>
+        <br>
+    </section>
+
+    <div class="row">
+        <div class="large-6 columns small-centered">
+            <div class="large-12 columns center">
+                <a class="expanded button" href="/">OK</a>
+            </div>
+        </div>
+    </div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+{% include 'footerbar.html' %}
+</body>
+</html>

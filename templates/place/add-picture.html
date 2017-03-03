@@ -1,0 +1,15 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Picture</title>
+    {% include 'essential.html' %}
+    <link rel="stylesheet" href={% static "css/user_profile/styles.css" %}>
+</head>
+<body>
+    {% include 'navbar.html' %}
+    {% include 'upload-image-template.html' with form_action="/place/handle-add-picture/" type="place_id" type_id=place_id %}
+    {% include 'footerbar.html' %}
+</body>
+</html>

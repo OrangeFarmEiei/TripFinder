@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ this_country.name }}</title>
+    {% include 'essential.html' %}
+    <link rel="stylesheet" href={% static "css/firstpage/styles.css" %}>
+</head>
+<body>
+    {% include 'place-info.html' with background_url_path="/country/picture?country_id=" object=this_country navigation=""%}
+    <div class="row" style="margin-top: 2em; margin-bottom: 2em;">
+        <div class="large-10 columns small-centered">
+            {% if access_edit %}
+            {% include 'upload-image-template.html' with form_action="/country/handle-change-picture/" type="country_id" type_id=this_country.id %}
+            {% endif %}
+            {% if city_list %}
+            <h3>City</h3>
+            <div class="row large-up-3 project-overlay-inset">
+            {% for c in city_list %}
+            {% include 'thumbnail-template.html' with object=c link_to="/city/?city_id=" link_img="/city/picture/?city_id=" display_class=2 %}
+            {% endfor %}
+            </div>
+            <a href="city" style="color:black"><p style="text-align: right;">Show more</p></a>
+            {% endif %}
+            {% if place_list %}
+            <h3 style="margin-top: 2em;">Popular Place</h3>
+            <div class="row large-up-3 project-overlay-inset">
+                {% for p in place_list %}
+                {% include 'thumbnail-template.html' with object=p link_to="/place/?place_id=" link_img="/place/picture/?place_id=" display_class=3 %}
+                {% endfor %}
+            </div>
+            <a href="popular-place" style="color:black"><p style="text-align: right;">Show more</p></a>
+            {% endif %}
+            {% if country_list %}
+            <h3 style="margin-top: 2em;">Other Country</h3>
+            <div class="row large-up-3 project-overlay-inset">
+                {% for c in country_list %}
+                {% include 'thumbnail-template.html' with object=c link_to="/country/?country_id=" link_img="/country/picture/?country_id=" display_class=1 %}
+                {% endfor %}
+            </div>
+            <a href="/country/all" style="color:black"><p style="text-align: right;">Show more</p></a>
+            {% endif %}
+            {% if trip_list %}
+            <h3 style="margin-top: 2em;">Featured Trip</h3>
+            <div class="row large-up-3 project-overlay-inset">
+                {% for c in trip_list %}
+                {% include 'thumbnail-template.html' with object=c link_to="/trip/?trip_id=" link_img="/trip/picture/?trip_id=" display_class=1 %}
+                {% endfor %}
+            </div>
+            <a href="featured-trip" style="color:black"><p style="text-align: right;">Show more</p></a>
+            {% endif %}
+
+        </div>
+    </div>
+    {% if access_edit %}
+    <div class="row">
+        <div class="large-6 columns">
+             <a class="expanded button" href="/country/edit?country_id={{ this_country.id }}">Edit Country</a>
+        </div>
+        <div class="large-6 columns">
+             <a class="expanded button" href="/country/delete?country_id={{ this_country.id }}">Delete Country</a>
+        </div>
+    </div>
+    {% endif %}
+    {% include 'footerbar.html' %}
+</body>
+</html>

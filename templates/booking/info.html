@@ -1,0 +1,177 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ name }}</title>
+    {% include 'essential.html' %}
+    <link rel="stylesheet" href={% static "css/firstpage/styles.css" %}>
+    <link rel="stylesheet" href={% static "css/progress_bar/styles.css"%}>
+</head>
+<style>
+    td {
+        text-align: left;
+        background-color: white;
+        table-layout: auto;
+    }
+    th {
+        background-color: #6B7A8F;
+        color: white
+    }
+</style>
+<body>
+    {% include 'navbar.html' %}
+
+    <input type="hidden" name="booking_id" id="booking_id" value="{{ booking_id }}">
+
+    <section>
+        <div class="large-6 columns small-centered">
+            <div class="progress">
+                <div class="circle done">
+                    <span class="label">&#10003</span>
+                    <span class="title">Detail</span>
+                </div>
+                <span class="bar active"></span>
+                <div class="circle active">
+                    <span class="label">2</span>
+                    <span class="title">Infomation</span>
+                </div>
+                <span class="bar"></span>
+                <div class="circle">
+                    <span class="label">3</span>
+                    <span class="title">Checking</span>
+                </div>
+                <span class="bar"></span>
+                <div class="circle">
+                    <span class="label">4</span>
+                    <span class="title">Payment</span>
+                </div>
+                <span class="bar"></span>
+                <div class="circle">
+                    <span class="label">5</span>
+                    <span class="title">Finish</span>
+                </div>
+            </div>
+            <br><br>
+        </div>
+    </section>
+
+    <form action="/booking/process-info/" method="get" id="info-form" name="info-form">
+    <input type='hidden' id='booking_id' name='booking_id' value="{{ booking_id }}">
+    {% for i in p %}
+        <br>
+        <div class="large-8 columns small-centered">
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="6">person information #{{ i }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                	<tr>
+                		<td width="5%"></td>
+                        <td width="14%">Full Name</td>
+                		<td>Title</td>
+                		<td>Firstname</td>
+                	 	<td>Lastname</td>
+                        <td width="5%"></td>
+                	</tr>
+                    <tr>
+                       	<td></td><td></td>
+                        <td>
+                            <select name="title-{{ i }}" id="title-{{ i }}" style="height:35px; width:80px" form='info-form'>
+                            	<option value="mr" selected="selected">Mr.</option>
+                            	<option value="ms">Ms.</option>
+                            	<option value="miss">Miss</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" name="firstname-{{ i }}" id="firstname-{{ i }}" placeholder="First Name" required>
+                        </td>
+                        <td>
+                            <input type="text" name="lastname-{{ i }}" id="lastname-{{ i }}" placeholder="Last Name" required>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Gender</td>
+                        <td>
+                            <select style="height:35px; width:90px" form='info-form' id='gender-{{ i }}' name='gender-{{ i }}'>
+                            	<option value="female">Female</option>
+                            	<option value="male" selected="selected" >Male</option>             
+                            </select>
+                        </td>
+                        <td></td><td></td><td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Date of Birth</td>
+                        <td>
+                            <input type="date" name="bday-{{ i }}" id="bday-{{ i }}" min="1916-01-01" max="2015-01-01"></td>
+                        <td></td><td></td><td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Nationality</td>
+                        <td>
+                            <select style="height:35px; width:200px" form='info-form' id='nation-{{ i }}' name='nation-{{ i }}'>
+                            	<option value="thai" selected="selected">Thai</option>
+                            	<option value="american">American</option>
+                            	<option value="korean">Korean</option>
+                            </select>
+                        </td>
+                        <td>Thai Citizen ID (Thai only)</td>
+                        <td>
+                            <input type="text" name="citizenid-{{ i }}" id='citizenid-{{ i }}' placeholder="Thai Citizen ID" required>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                		<td>Passport No.</td>
+                        <td>
+                            <input type="text" name="passportno-{{ i }}" id='passportno-{{ i }}' placeholder="Passport No." required>
+                        </td>
+                		<td></td><td></td><td></td>
+                    </tr>
+               	    <tr>
+                        <td></td>
+                		<td>Contact Info</td>
+                		<td>Mobile</td>
+                	 	<td>Email</td>
+                        <td></td><td></td>
+                    </tr>
+               	    <tr>
+               			<td></td><td></td>
+                    	<td>
+                            <input type="text" name="mobile-{{ i }}" id='mobile-{{ i }}' placeholder="08x-xxx-xxxx" required>
+                    	</td>
+                    	<td>
+                            <input type="text" name="email-{{ i }}" id='email-{{ i }}' placeholder="john@abc.com" required>
+                        </td>
+                        <td></td><td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    {% endfor %}
+    <br><br>
+    <div class="row">
+        <div class="large-7 columns small-centered">
+            <div class="large-4 columns">
+                <a class="expanded button" href="/booking?booking_id={{ booking_id }}">back</a>
+            </div>
+            <div class="large-4 columns">
+                <input class="expanded button" type="submit" value="Next">
+            </div>
+        </div> 
+    </div>
+    </form>
+
+    <script>
+
+    </script>
+    {% include 'footerbar.html' %}
+</body>
+</html>

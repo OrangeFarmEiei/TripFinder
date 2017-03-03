@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome to Trip Finder</title>
+    {% include 'essential.html' %}
+    {% include 'react-essential.html' %}
+    <link rel="stylesheet" href={% static "css/firstpage/styles.css" %}>
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <section style="display: block; background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),  url({% static "pictures/sao-ching-cha.jpg" %});background-size:cover">
+        <div class="row">
+            <div class="large-10 columns small-centered">
+                <div class="section-background" align="right">
+                    <div id="search-button"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="large-10 columns small-centered" style="margin-top: 2em; margin-bottom: 2em;">
+        <h3>Featured Trip</h3>
+        <div class="row large-up-3 project-overlay-inset">
+            {% for c in trip_list %}
+            {% include 'thumbnail-template.html' with link_to="/trip/?trip_id=" object=c link_img="/trip/picture/?trip_id=" display_class=1 %}
+            {% endfor %}
+        </div>
+        <a href="/trip/featured/" style="color: black;"><p style="text-align: right;">Show more</p></a>
+    </div>
+    <div class="large-10 columns small-centered" style="margin-top: 2em; margin-bottom: 2em;">
+       <h3>Country</h3>
+        <div class="row large-up-3 project-overlay-inset">
+            {% for c in country_list %}
+            {% include 'thumbnail-template.html' with link_to="/country/?country_id=" object=c link_img="/country/picture/?country_id=" display_class=1 %}
+            {% endfor %}
+        </div>
+        <a href="/country/all/" style="color:black"><p style="text-align: right;">Show more</p></a>
+    </div>
+    <div class="large-10 columns small-centered" style="margin-top: 2em; margin-bottom: 2em;">
+        <h3>City</h3>
+        <div class="row large-up-3 project-overlay-inset">
+            {% for c in city_list %}
+            {% include 'thumbnail-template.html' with link_to="/city/?city_id=" object=c link_img="/city/picture/?city_id=" display_class=2 %}
+            {% endfor %}
+        </div>
+        <a href="/city/all/" style="color:black"><p style="text-align: right;">Show more</p></a>
+    </div>
+    <div class="large-10 columns small-centered" style="margin-top: 2em; margin-bottom: 2em;">
+        <h3>Place</h3>
+        <div class="row large-up-3 project-overlay-inset">
+            {% for c in place_list %}
+            {% include 'thumbnail-template.html' with link_to="/place/?place_id=" object=c link_img="/place/picture/?place_id=" display_class=3 %}
+            {% endfor %}
+        </div>
+        <a href="/place/all/" style="color:black"><p style="text-align: right;">Show more</p></a>
+    </div>
+    <div class="large-10 columns small-centered" style="margin-top: 2em; margin-bottom: 2em;">
+        <h3>Company </h3>
+        <div class="row large-up-4 project-overlay-inset">
+            {% for c in company_list %}
+            {% include 'thumbnail-template.html' with link_to="/company/?company_id=" object=c link_img="/company/logo/?company_id=" display_class=1 %}
+            {% endfor %}
+        </div>
+        <a href="/company/all/" style="color:black"><p style="text-align: right;">Show more</p></a>
+    </div>
+    {% include 'footerbar.html' %}
+</body>
+
+<script src={% static "js/searchbutton.js" %} type="text/babel"></script>
+</html>

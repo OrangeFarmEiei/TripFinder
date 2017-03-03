@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Profile</title>
+    {% include 'essential.html' %}
+    <link rel="stylesheet" href={% static "css/user_profile/styles.css" %}>
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <div class="row" style="margin-top: 2em; margin-bottom: 2em;">
+    <div class="large-6 columns small-centered">
+    <div class="row">
+        <form action="/profile/edit/" method="post">
+            {% csrf_token %}
+            <label for="">Name
+                <input name="name" type="text" placeholder="Name" id="name" value="{{ name }}">
+            </label>
+            <label for="">Email Address
+                <input name="email" id="email" type="email" placeholder="Email Address" value="{{ email }}">
+            </label>
+            <label for="">Bio
+                <textarea name="bio" id="bio" type="text" placeholder="Tell about yourself" rows="4">{{ bio }}</textarea>
+            </label>
+            <div class="footer text-centered">
+                <input class="button" type="submit" value="Save Change">
+            </div>
+        </form>
+    </div>
+    </div>
+    </div>
+    {% include 'footerbar.html' %}
+</body>
+</html>

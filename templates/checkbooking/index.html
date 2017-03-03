@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Check Booking</title>
+    {% include 'essential.html' %}
+    <link rel="stylesheet" href={% static "css/user_profile/styles.css" %}>
+</head>
+<style>
+    td {
+        text-align: center;
+        table-layout: auto;
+    }
+    th {
+        background-color: #6B7A8F;
+        color: white;
+    }
+</style>
+<body>
+    {% include 'navbar.html' %}
+    <br><br>
+    <div class="large-11 columns small-centered">
+        <h4> Check Booking </h4>
+        		<table align="center">
+                	<tr style="background-color:#6B7A8F;color:white">
+                        <th>Username</th>
+                        <th width="20%">Trip Name</th>
+                        <th>Company</th>
+                        <th>Date of Booking</th>
+                        <th>Total people</th>
+                        <th>Total Price</th>
+                        <th>Status</th>
+                        <th>Payment</th>
+                    </tr>
+                    {% for b in book %}
+                    <tr>
+                        <td>{{ b.user.username }}</td>
+                        <td>{{ b.trip.name }}</td>
+                        <td>{{ b.company.name }}</td>
+                        <td>{{ b.book_date }}</td>
+                        <td>{{ b.people }}</td>
+                        <td>{{ b.total_price }} THB</td>
+                        {% if b.status == True %}
+                        <td>Confirm</td>
+                        <td></td>
+                        {% else %}
+                        <td>OnGoing</td>
+                        <td>
+                            <a class="button" href="/checkbooking/process_confirm/?booking_id={{ b.id }}">Confirm</a>
+                        </td>
+                        {% endif %}
+                    {% endfor %}
+            	</table>
+		</div>
+</body>
+    {% include 'footerbar.html' %}
+</body>
+</html>

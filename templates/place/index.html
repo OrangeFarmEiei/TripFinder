@@ -1,0 +1,165 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ this_place.name }}</title>
+    {% include 'essential.html' %}
+    {% include 'jquery-essential.html' %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/motion-ui/1.2.2/motion-ui.min.css">
+    <link rel="stylesheet" href={% static "css/firstpage/styles.css" %}>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+</head>
+<style>
+    .orbit-image{
+        width: 100%;
+        height: 500px;
+    }
+    .box04_head {
+        background: #687A8F;
+        color: white;
+    }
+    input.star { display: none; }
+    label.star {
+        float: right;
+        padding: 3px;
+        font-size: 20px;
+        color: #444;
+        transition: all .2s;
+    }
+    input.star:checked ~ label.star:before {
+        content: '\f005';
+        color: orange;
+        transition: all .25s;
+    }
+    label.star:hover { transform: rotate(-15deg) scale(1.3); }
+    label.star:before {
+        content: '\f006';
+        font-family: FontAwesome;
+    }
+    a.whitelink {
+        text-decoration: none;
+        color: white;
+    }
+    a:hover.whitelink {
+        text-decoration: underline;
+        color: white;
+    }
+    label.rate:before {
+        content: '\f005';
+        font-family: FontAwesome;
+        color: orange;
+    }
+</style>
+<body>
+    {% include 'place-info.html' with background_url_path="/place/picture/?place_id=" object=this_place navigation=nav|safe %}
+    <div class="large-9 columns small-centered">
+        <br><br>
+        <div class="orbit" role="region" aria-label="Country Pictures" data-orbit data-options="animInFromLeft:fade-in; animInFromRight:fade-in; animOutToLeft:fade-out; animOutToRight:fade-out;">
+            <ul class="orbit-container">
+                <button class="orbit-previous"><span class="show-for-sr">Previous Slide</span>&#9664;&#xFE0E;</button>
+                <button class="orbit-next"><span class="show-for-sr">Next Slide</span>&#9654;&#xFE0E;</button>
+                {% for i in place_picture %}
+                <li class="orbit-slide">
+                    <img class="orbit-image" src="/place/picture/?place_picture_id={{ i.id }}">
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 2em; margin-bottom: 2em;">
+        <div class="large-10 columns small-centered">
+            {% if popular_place_list %}
+            <h3>Popular Place in {{ host_city.name }}</h3>
+            <div class="row large-up-3 project-overlay-inset">
+                {% for p in popular_place_list %}
+                {% include 'thumbnail-template.html' with link_to="/place/?place_id=" link_img="/place/picture/?place_id=" object=p display_class=3 %}
+                {% endfor %}
+            </div>
+            <a href="/city/c/{{ host_city.url_point_to }}/popular-place" style="color:black"><p style="text-align: right;">Show more</p></a>
+            {% endif %}
+            {% if related_place %}
+            <h3 style="margin-top: 2em;">Related</h3>
+            <div class="row large-up-3 project-overlay-inset">
+                {% for p in related_place %}
+                {% include 'thumbnail-template.html' with link_to="/place/?place_id=" link_img="/place/picture/?place_id=" object=p display_class=3 %}
+                {% endfor %}
+            </div>
+            <a href="related" style="color:black"><p style="text-align: right;">Show more</p></a>
+            {% endif %}
+            {% if related_trip %}
+            <h3 style="margin-top: 2em;">Featured Trip</h3>
+            <div class="row large-up-3 project-overlay-inset">
+                {% for p in related_trip %}
+                {% include 'thumbnail-template.html' with link_to="/trip/?trip_id=" link_img="/trip/picture/?trip_id=" object=p.trip %}
+                {% endfor %}
+            </div>
+            <a href="featured-trip" style="color:black"><p style="text-align: right;">Show more</p></a>
+            {% endif %}
+        
+            {% if access_edit %}
+            <div class="row">
+                <div class="large-4 columns">
+                    <a class="expanded button" href="/place/edit?place_id={{ this_place.id }}">Edit Place</a>
+                </div>
+                <div class="large-4 columns">
+                    <a class="expanded button" href="/place/delete?place_id={{ this_place.id }}">Delete Place</a>
+                </div>
+                <div class="large-4 columns">
+                    <a class="expanded button" href="/place/edit-picture?place_id={{ this_place.id }}">Edit Image</a>
+                </div>
+            </div>
+            {% endif %}
+            <div class="row" style="margin-top: 5em">
+                <h3>Review</h3>
+            </div>
+            <div class="row">
+                {% for r in review %}
+                    <div class="box04_head">
+                        <h5 class="box04_head02" style="padding: 10px ;  margin-left: 1em ">Comment #{{ forloop.counter }}
+                            {% if access_edit or forloop.counter0 in allow_delete_review %} | 
+                            <a href="/place/delete-review/?review_id={{ r.id }}" class="whitelink">Delete</a>
+                            {% endif %}
+                        </h5>
+                    </div>
+                    <div class="box04_page" style="margin-left: 2em ; margin-right: 2em; margin-top: 2em;">
+                        <p>{{r.comment}}</p>
+                        <p style="float: right"><a href="/profile/user/{{r.user.username}}">{{r.user.username}}</a> | {{r.timestamp}}</p>
+                        <div style="float: right;margin-right:1em">
+                            {% with count=''|center:r.rating %}
+                            {% for i in count %}
+                            <div class="column small-1" style="float: right"><label class="rate"></label></div>
+                            {% endfor %}
+                            {% endwith %}
+                        </div>
+                        <br><br>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="row" style="margin-top: 5em">
+                <form action="/place/add-review/" id='review' name='review' method='get'>
+                    <input type="hidden" value='{{ this_place.id }}' id='place_id' name='place_id'>
+                    <fieldset style="display: inline-block">
+                        <input class="star" type="radio" name="rating" value='5' id='five'>
+                        <label class="star" for="five"></label>
+                        <input class="star" type="radio" name="rating" value='4' id='four'>
+                        <label class="star" for="four"></label>
+                        <input class="star" type="radio" name="rating" value='3' id='three'>
+                        <label class="star" for="three"></label>
+                        <input class="star" type="radio" name="rating" value='2' id='two'>
+                        <label class="star" for="two"></label>
+                        <input class="star" type="radio" name="rating" value='1' id='one'>
+                        <label class="star" for="one"></label>
+                    </fieldset>
+                    <textarea id="comment" name="comment" rows="4" placeholder="Write your review here"></textarea>
+                    <input type="submit" class="button" value="Save">
+                </form>
+            </div>
+        </div>
+    </div>    
+    {% include 'footerbar.html' %}
+    <script>
+        $(document).foundation();
+    </script>
+</body>
+</html>

@@ -1,0 +1,171 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ com1.name }}</title>
+    {% include 'essential.html' %}
+    {% include 'jquery-essential.html' %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/motion-ui/1.2.2/motion-ui.min.css">
+    <link rel="stylesheet" href={% static "css/styles.css" %}>
+    <link rel="stylesheet" href={% static "css/firstpage/styles.css" %}>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+</head>
+<style>
+    .box04_head {
+        background: #687A8F;
+        color: white;
+    }
+    .orbit-image{
+        width: 100%;
+        height: 500px;
+    }
+    
+    label.rate:before {
+        content: '\f005';
+        font-family: FontAwesome;
+        color: orange;
+    }
+    a.whitelink {
+        text-decoration: none;
+        color: white;
+    }
+    a:hover.whitelink {
+        text-decoration: underline;
+        color: white;
+    }
+    input.star { display: none; }
+    label.star {
+        float: right;
+        padding: 3px;
+        font-size: 20px;
+        color: #444;
+        transition: all .2s;
+    }
+    input.star:checked ~ label.star:before {
+        content: '\f005';
+        color: orange;
+        transition: all .25s;
+    }
+    label.star:hover { transform: rotate(-15deg) scale(1.3); }
+    label.star:before {
+        content: '\f006';
+        font-family: FontAwesome;
+    }
+</style>
+<body>
+    {% include "navbar.html" %}
+    <div class="row" style="margin-top: 2em; margin-bottom: 2em;">
+        <div class="large-10 columns small-centered">
+            <div class="row text-centered">
+                <h1>
+                    {{ com1.name }}
+                </h1>
+            </div>
+            <div class="row">
+                <div class="large-6 columns">
+                    <img src="/company/logo/?company_id={{ com1.id }}" width="250px" height="250px"/>
+            {% if allow_edit %}
+            {% include 'upload-image-template.html' with form_action="/company/process-edit-logo/" type="company_id" type_id=com1.id %}
+            {% endif %}
+                </div>
+                <div class="large-6 columns">
+                    <div style="color: gray;" class="row">
+                        {{ com1.description }}
+                    </div>
+                    <div style="margin-bottom: 1em;" class="row">{{ com1.location }}</div>
+                    {% if allow_edit %}
+                    <div class="row">
+                        <div class="large-6 columns"><a class="expanded button" href="/company/edit?company_id={{ com1.id }}">Edit</a></div>
+                        <div class="large-6 columns">
+                            <a class="expanded button" href="#">Delete</a>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% if com1.photos %}
+            <div class="orbit" role="region" aria-label="Country Pictures" data-orbit data-options="animInFromLeft:fade-in; animInFromRight:fade-in; animOutToLeft:fade-out; animOutToRight:fade-out;">
+                  <ul class="orbit-container">
+                      <button class="orbit-previous"><span class="show-for-sr">Previous Slide</span>&#9664;&#xFE0E;</button>
+                      <button class="orbit-next"><span class="show-for-sr">Next Slide</span>&#9654;&#xFE0E;</button>
+                      {% for p in com1.photos %}
+                      <li class="orbit-slide">
+                          <img class="orbit-image" src="/company/picture/?company_picture_id={{ p.id }}">
+                      </li>
+                      {% endfor %}
+                  </ul>
+            </div>
+            {% endif %}
+            {% if allow_edit %}
+            {% include 'upload-image-template.html' with form_action="/company/process-add-photo/" type="company_id" type_id=com1.id %}
+            {% endif %}
+            <div class="row">
+                <h3 style="margin-top: 2em;">Featured Trip</h3>
+                {% if all_trip %}
+                <div class="row large-up-3 project-overlay-inset">
+                {% for t in all_trip %}
+                    {% include 'thumbnail-template.html' with link_to="/trip/?trip_id=" link_img="/trip/picture/?trip_id=" object=t display_class=1 %}
+                {% endfor %}
+                </div>
+                <a href="featured-trip/?company_id={{ com1.id }}" style="color:black"><p style="text-align: right;">Show more</p></a>
+                {% else %}
+                No trip found.
+                {% endif %}
+            </div>
+            <div class="row" style="margin-top: 5em">
+                <h3>Review</h3>
+            </div>
+            <div class="row">
+                {% for r in review %}
+                    <div class="box04_head">
+                        <h5 class="box04_head02" style="padding: 10px ;  margin-left: 1em ">Comment #{{ forloop.counter }}
+                            {% if allow_edit or forloop.counter0 in allow_delete_review %} | 
+                            <a href="delete-review/?review_id={{ r.id }}&company_id={{ com1.id }}" class="whitelink">Delete</a>
+                            {% endif %}
+                        </h5>
+                    </div>
+                    <div class="box04_page" style="margin-left: 2em ; margin-right: 2em; margin-top: 2em;">
+                        <p>{{r.comment}}</p>
+                        <p style="float: right"><a href="/profile/user/{{r.user.username}}">{{r.user.username}}</a> | {{ r.timestamp }}</p>
+                        <div style="float: right;margin-right:1em">
+                            {% with count=''|center:r.rating %}
+                            {% for i in count %}
+                            <div class="column small-1" style="float: right"><label class="rate"></label></div>
+                            {% endfor %}
+                            {% endwith %}
+                        </div>
+                        <br><br>
+                    </div>
+                {% endfor %}
+            </div>
+            {% if allow_review %}
+            <div class="row" style="margin-top: 5em">
+                <form action="add-review" id='review' name='review' method='get'>
+                    <input type="hidden" value='{{ com1.id }}' id='company_id' name='company_id'>
+                    <fieldset style="display: inline-block">
+                        <input class="star" type="radio" name="rating" value='5' id='five'>
+                        <label class="star" for="five"></label>
+                        <input class="star" type="radio" name="rating" value='4' id='four'>
+                        <label class="star" for="four"></label>
+                        <input class="star" type="radio" name="rating" value='3' id='three'>
+                        <label class="star" for="three"></label>
+                        <input class="star" type="radio" name="rating" value='2' id='two'>
+                        <label class="star" for="two"></label>
+                        <input class="star" type="radio" name="rating" value='1' id='one'>
+                        <label class="star" for="one"></label>
+                    </fieldset>
+                    <textarea id="comment" name="comment" rows="4" placeholder="Write your review here"></textarea>
+                    <input type="submit" class="button" value="Save">
+                </form>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% include "footerbar.html" %}
+    <script>
+        $(document).foundation();
+    </script>
+</body>
+</html>

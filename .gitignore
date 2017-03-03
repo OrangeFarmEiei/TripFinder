@@ -1,0 +1,5 @@
+session/
+*/*.pyc
+*/*.orig
+*/*/*.pyc
+*/*/*.orig

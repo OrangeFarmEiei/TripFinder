@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome to Travel Finder</title>
+    {% include 'essential.html' %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css">
+    <link rel="stylesheet" href={% static "css/login/styles.css" %}>
+</head>
+<body>
+    {% include 'orange-farm-big.html' %}
+    <div id="orange-farm-big"></div>
+    <div class="row">
+        <div class="large-6 columns small-centered">
+            <div class="signup-panel">
+                <div class="welcome" style="font-size: 40px">Register</div>
+                <div class="text-centered" style="margin-bottom: 1em;">
+                    {% if alert %}
+                    <div style="color: red;">{{ alert }}</div>
+                    {% endif %}
+                </div>
+                <form method="post" name="submit_form" id="submit_form" action="/register/complete-register/">
+                    {% csrf_token %}
+                    {% include 'register/input-group.html' with image="fi-torso-female" type="text" name="username" placeholder="Choose your username" %}
+                    {% include 'register/input-group.html' with image="fi-mail" type="email" name="email" placeholder="Enter your email address" %}
+                    {% include 'register/input-group.html' with image="fi-lock" type="password" name="password" placeholder="Set your password" %}
+                    <div class="footer" style="margin-bottom: 1em;">Have an account? <a href="/login">Login</a>
+                    </div>
+                    <div class="footer">
+                        <input type="submit" class="button" value="Register">
+                    </div>
+              </form>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+function enableButton() {
+    if (!document.getElementById("username-field").value ||
+            !document.getElementById("email-field").value ||
+            !document.getElementById("password-field").value) {
+        //document.getElementById("submit-button").className = "disabled button";
+    }
+    else {
+        //document.getElementById("submit-button").className = "button";
+    }
+}
+</script>
+</html>

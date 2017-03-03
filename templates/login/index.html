@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    {% include 'essential.html' %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.min.css">
+    <link rel="stylesheet" href={% static "css/login/styles.css" %}>
+</head>
+<body>
+    {% include 'orange-farm-big.html' %}
+    <div class="row">
+            <div class="large-6 columns small-centered">
+              <div class="signup-panel">
+                <div class="welcome" style="font-size: 40px; ">Login</div>
+                <div class="text-centered" style="margin-bottom: 1em;">
+                    {% if alert %}
+                    <div style="color: red;">{{ alert }}</div>
+                    {% endif %}
+                </div>
+                <form method="post" name="submit_form" id="submit_form" action="/login/login-status/">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <span class="input-group-label"><i class="fi-torso-female"></i></span>
+                        <input class="input-group-field" type="text" name="username" placeholder="Username" value="{{ username }}">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-label"><i class="fi-lock"></i></span>
+                        <input class="input-group-field" type="password" name="password" placeholder="Password">
+                    </div>
+                    <div class="footer" style="margin-bottom: 1em;">
+                        Don't have an account? <a href="/register">Register</a><br>
+                    </div>
+                    <div class="footer">
+                        <input type="submit" class="button" value="Login">
+                    </div>
+                </form>
+              </div>
+            </div>
+    </div>
+</body>
+</html>

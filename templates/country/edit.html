@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Country</title>
+    {% include 'essential.html' %}
+    <link rel="stylesheet" href={% static "css/user_profile/styles.css" %}>
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <div class="row" style="margin-top: 2em; margin-bottom: 2em;">
+        <div class="large-6 columns small-centered">
+            <form action="/country/process-edit" method="get">
+                <input type="hidden" name="country_id" value="{{ this_country.id }}">
+                <label for="" class="text-center" style="font-size: 30px;">{{ this_country.name }}</label>
+                <label for="">Description
+                    <textarea name="description" id="description" type="text" rows="4">{{ this_country.description }}</textarea>
+                </label>
+                <div class="footer text-centered">
+                    <input class="button" type="submit" value="Save Change">
+                </div>
+            </form>
+        </div>
+    </div>
+    {% include 'footerbar.html' %}
+</body>
+</html>
